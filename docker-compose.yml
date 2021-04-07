@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  scraper:
+    image: lindenhoney/linden-honey-go:latest
+    ports:
+      - 8080:8080
+    networks:
+      - internal
