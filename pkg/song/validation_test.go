@@ -16,13 +16,13 @@ func TestQuote_Validate(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "valid",
+			name: "ok",
 			fields: fields{
 				Phrase: "Some phrase",
 			},
 		},
 		{
-			name: "empty phrase",
+			name: "err  empty phrase",
 			fields: fields{
 				Phrase: "",
 			},
@@ -57,7 +57,7 @@ func TestVerse_Validate(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "valid",
+			name: "ok",
 			fields: fields{
 				Quotes: []Quote{
 					{
@@ -67,14 +67,14 @@ func TestVerse_Validate(t *testing.T) {
 			},
 		},
 		{
-			name: "empty quotes",
+			name: "err  empty quotes",
 			fields: fields{
 				Quotes: make([]Quote, 0),
 			},
 			wantErr: true,
 		},
 		{
-			name: "invalid quote",
+			name: "err  invalid quote",
 			fields: fields{
 				Quotes: []Quote{
 					{
@@ -119,7 +119,7 @@ func TestSong_Validate(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "valid",
+			name: "ok",
 			fields: fields{
 				Title:  "Some title",
 				Author: "Some author",
@@ -136,7 +136,7 @@ func TestSong_Validate(t *testing.T) {
 			},
 		},
 		{
-			name: "empty title",
+			name: "err  empty title",
 			fields: fields{
 				Title:  "",
 				Author: "Some author",
@@ -154,7 +154,7 @@ func TestSong_Validate(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "empty verses",
+			name: "err  empty verses",
 			fields: fields{
 				Title:  "Some title",
 				Author: "Some author",
@@ -164,7 +164,7 @@ func TestSong_Validate(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "invalid verse",
+			name: "err  invalid verse",
 			fields: fields{
 				Title:  "Some title",
 				Author: "Some author",
@@ -185,7 +185,7 @@ func TestSong_Validate(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "invalid quote",
+			name: "err  invalid quote",
 			fields: fields{
 				Title:  "Some title",
 				Author: "Some author",
@@ -242,14 +242,14 @@ func TestPreview_Validate(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "valid",
+			name: "ok",
 			fields: fields{
 				ID:    "123",
 				Title: "Some title",
 			},
 		},
 		{
-			name: "empty id",
+			name: "err  empty id",
 			fields: fields{
 				ID:    "",
 				Title: "Some title",
@@ -257,7 +257,7 @@ func TestPreview_Validate(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "empty title",
+			name: "err  empty title",
 			fields: fields{
 				ID:    "123",
 				Title: "",

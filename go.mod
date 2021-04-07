@@ -1,8 +1,8 @@
 module github.com/linden-honey/linden-honey-go
 
-go 1.15
+go 1.16
 
 require (
-	github.com/linden-honey/linden-honey-sdk-go v0.0.3
+	github.com/linden-honey/linden-honey-sdk-go v0.0.4
 	github.com/stretchr/testify v1.7.0
 )
