@@ -1,10 +1,10 @@
 MODE						?= local
 
 GO							?= @go
-GO_VERSION					?= 1.15
+GO_VERSION					?= 1.16
 
 GOLANGCI_LINT				?= @golangci-lint
-GOLANGCI_LINT_VERSION		?= 1.29.0
+GOLANGCI_LINT_VERSION		?= 1.39.0
 
 PACKAGES					?= ./...
 GO_COVER_PROFILE			?= coverage.out
@@ -35,10 +35,6 @@ mod/tidy:
 .PHONY: prepare
 prepare: mod/download fmt
 
-.PHONY: run
-run: prepare
-	$(GO) run -v ./cmd/server/main.go
-
 .PHONY: build
 build: prepare
 	$(GO) build -v $(PACKAGES)
@@ -57,5 +53,5 @@ coverage: test
 	$(GO) tool cover -html=$(GO_COVER_PROFILE) -o coverage.html
 
 .PHONY: lint
-lint: prepare
+lint:
 	$(GOLANGCI_LINT) run -v
