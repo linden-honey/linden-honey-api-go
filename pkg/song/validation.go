@@ -33,10 +33,23 @@ func (v Verse) Validate() error {
 	return nil
 }
 
+// Validate validates a Preview and returns an error if validation is failed
+func (p Preview) Validate() error {
+	if p.ID == "" {
+		return sdkerrors.NewRequiredValueError("ID")
+	}
+
+	if p.Title == "" {
+		return sdkerrors.NewRequiredValueError("Title")
+	}
+
+	return nil
+}
+
 // Validate validates a Song and returns an error if validation is failed
 func (s Song) Validate() error {
-	if s.Title == "" {
-		return sdkerrors.NewRequiredValueError("Title")
+	if err := s.Preview.Validate(); err != nil {
+		return err
 	}
 
 	if len(s.Verses) == 0 {
@@ -50,18 +63,6 @@ func (s Song) Validate() error {
 				err,
 			)
 		}
-	}
-
-	return nil
-}
-
-// Validate validates a Preview and returns an error if validation is failed
-func (p Preview) Validate() error {
-	if p.ID == "" {
-		return sdkerrors.NewRequiredValueError("ID")
-	}
-	if p.Title == "" {
-		return sdkerrors.NewRequiredValueError("Title")
 	}
 
 	return nil

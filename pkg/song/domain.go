@@ -16,23 +16,28 @@ type Verse struct {
 	Quotes []Quote `json:"quotes"`
 }
 
+// Preview represents a domain object
+type Preview struct {
+	ID     string `json:"id"`
+	Title  string `json:"title"`
+	Author string `json:"author,omitempty"`
+	Album  string `json:"album,omitempty"`
+}
+
 // Song represents a domain object
 type Song struct {
-	ID     string  `json:"id,omitempty"`
-	Title  string  `json:"title"`
-	Author string  `json:"author,omitempty"`
-	Album  string  `json:"album,omitempty"`
+	Preview
 	Verses []Verse `json:"verses"`
 }
 
 // GetQuotes returns all quotes from the song
 func (s Song) GetQuotes() []Quote {
-	qq := make([]Quote, 0)
+	quotes := make([]Quote, 0)
 	for _, v := range s.Verses {
-		qq = append(qq, v.Quotes...)
+		quotes = append(quotes, v.Quotes...)
 	}
 
-	return qq
+	return quotes
 }
 
 // GetRandomQuote returns a random quote from the song or an error if there are no quotes
@@ -41,13 +46,13 @@ func (s Song) GetRandomQuote() (*Quote, error) {
 		rand.NewSource(time.Now().Unix()),
 	)
 
-	qq := s.GetQuotes()
-	if len(qq) == 0 {
+	quotes := s.GetQuotes()
+	quotesCount := len(quotes)
+	if quotesCount == 0 {
 		return nil, errors.New("no quotes")
 	}
-	ri := r.Intn(len(qq))
 
-	return &qq[ri], nil
+	return &quotes[r.Intn(quotesCount)], nil
 }
 
 // GetRandomVerse returns a random verse from the song or an error if there are no verses
@@ -56,16 +61,10 @@ func (s Song) GetRandomVerse() (*Verse, error) {
 		rand.NewSource(time.Now().Unix()),
 	)
 
-	if len(s.Verses) == 0 {
+	versesCount := len(s.Verses)
+	if versesCount == 0 {
 		return nil, errors.New("no verses")
 	}
-	ri := r.Intn(len(s.Verses))
 
-	return &s.Verses[ri], nil
-}
-
-// Preview represents a domain object
-type Preview struct {
-	ID    string `json:"id"`
-	Title string `json:"title"`
+	return &s.Verses[r.Intn(versesCount)], nil
 }
