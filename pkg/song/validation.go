@@ -33,8 +33,8 @@ func (v Verse) Validate() error {
 	return nil
 }
 
-// Validate validates a Preview and returns an error if validation is failed
-func (p Preview) Validate() error {
+// Validate validates a Meta and returns an error if validation is failed
+func (p Meta) Validate() error {
 	if p.ID == "" {
 		return sdkerrors.NewRequiredValueError("ID")
 	}
@@ -48,7 +48,7 @@ func (p Preview) Validate() error {
 
 // Validate validates a Song and returns an error if validation is failed
 func (s Song) Validate() error {
-	if err := s.Preview.Validate(); err != nil {
+	if err := s.Meta.Validate(); err != nil {
 		return err
 	}
 

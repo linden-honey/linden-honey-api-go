@@ -215,7 +215,7 @@ func TestSong_Validate(t *testing.T) {
 			rq := require.New(t)
 
 			s := Song{
-				Preview: Preview{
+				Meta: Meta{
 					Title:  tt.fields.Title,
 					Author: tt.fields.Author,
 					Album:  tt.fields.Album,
@@ -271,7 +271,7 @@ func TestPreview_Validate(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			rq := require.New(t)
 
-			p := Preview{
+			p := Meta{
 				ID:    tt.fields.ID,
 				Title: tt.fields.Title,
 			}
