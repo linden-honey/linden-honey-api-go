@@ -215,9 +215,11 @@ func TestSong_Validate(t *testing.T) {
 			rq := require.New(t)
 
 			s := Song{
-				Title:  tt.fields.Title,
-				Author: tt.fields.Author,
-				Album:  tt.fields.Album,
+				Preview: Preview{
+					Title:  tt.fields.Title,
+					Author: tt.fields.Author,
+					Album:  tt.fields.Album,
+				},
 				Verses: tt.fields.Verses,
 			}
 			err := s.Validate()
