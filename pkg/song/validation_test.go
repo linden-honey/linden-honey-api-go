@@ -108,9 +108,7 @@ func TestVerse_Validate(t *testing.T) {
 
 func TestSong_Validate(t *testing.T) {
 	type fields struct {
-		Title  string
-		Author string
-		Album  string
+		Meta   Meta
 		Verses []Verse
 	}
 	tests := []struct {
@@ -121,9 +119,12 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "ok",
 			fields: fields{
-				Title:  "Some title",
-				Author: "Some author",
-				Album:  "Some album",
+				Meta: Meta{
+					ID:     "1",
+					Title:  "Some title",
+					Author: "Some author",
+					Album:  "Some album",
+				},
 				Verses: []Verse{
 					{
 						Quotes: []Quote{
@@ -136,11 +137,35 @@ func TestSong_Validate(t *testing.T) {
 			},
 		},
 		{
-			name: "err  empty title",
+			name: "err  invalid meta  empty id",
 			fields: fields{
-				Title:  "",
-				Author: "Some author",
-				Album:  "Some album",
+				Meta: Meta{
+					ID:     "",
+					Title:  "Some title",
+					Author: "Some author",
+					Album:  "Some album",
+				},
+				Verses: []Verse{
+					{
+						Quotes: []Quote{
+							{
+								Phrase: "Some phrase",
+							},
+						},
+					},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "err  invalid meta  empty title",
+			fields: fields{
+				Meta: Meta{
+					ID:     "1",
+					Title:  "",
+					Author: "Some author",
+					Album:  "Some album",
+				},
 				Verses: []Verse{
 					{
 						Quotes: []Quote{
@@ -156,9 +181,12 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  empty verses",
 			fields: fields{
-				Title:  "Some title",
-				Author: "Some author",
-				Album:  "Some album",
+				Meta: Meta{
+					ID:     "1",
+					Title:  "Some title",
+					Author: "Some author",
+					Album:  "Some album",
+				},
 				Verses: make([]Verse, 0),
 			},
 			wantErr: true,
@@ -166,9 +194,12 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  invalid verse",
 			fields: fields{
-				Title:  "Some title",
-				Author: "Some author",
-				Album:  "Some album",
+				Meta: Meta{
+					ID:     "1",
+					Title:  "Some title",
+					Author: "Some author",
+					Album:  "Some album",
+				},
 				Verses: []Verse{
 					{
 						Quotes: []Quote{
@@ -187,9 +218,12 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  invalid quote",
 			fields: fields{
-				Title:  "Some title",
-				Author: "Some author",
-				Album:  "Some album",
+				Meta: Meta{
+					ID:     "1",
+					Title:  "Some title",
+					Author: "Some author",
+					Album:  "Some album",
+				},
 				Verses: []Verse{
 					{
 						Quotes: []Quote{
@@ -215,11 +249,7 @@ func TestSong_Validate(t *testing.T) {
 			rq := require.New(t)
 
 			s := Song{
-				Meta: Meta{
-					Title:  tt.fields.Title,
-					Author: tt.fields.Author,
-					Album:  tt.fields.Album,
-				},
+				Meta:   tt.fields.Meta,
 				Verses: tt.fields.Verses,
 			}
 			err := s.Validate()
