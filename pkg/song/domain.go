@@ -16,8 +16,8 @@ type Verse struct {
 	Quotes []Quote `json:"quotes"`
 }
 
-// Meta represents a domain object
-type Meta struct {
+// Metadata represents a domain object
+type Metadata struct {
 	ID     string `json:"id"`
 	Title  string `json:"title"`
 	Author string `json:"author,omitempty"`
@@ -26,7 +26,7 @@ type Meta struct {
 
 // Song represents a domain object
 type Song struct {
-	Meta
+	Metadata
 	Verses []Verse `json:"verses"`
 }
 

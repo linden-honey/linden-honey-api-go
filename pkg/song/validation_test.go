@@ -108,7 +108,7 @@ func TestVerse_Validate(t *testing.T) {
 
 func TestSong_Validate(t *testing.T) {
 	type fields struct {
-		Meta   Meta
+		Meta   Metadata
 		Verses []Verse
 	}
 	tests := []struct {
@@ -119,7 +119,7 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "ok",
 			fields: fields{
-				Meta: Meta{
+				Meta: Metadata{
 					ID:     "1",
 					Title:  "Some title",
 					Author: "Some author",
@@ -139,7 +139,7 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  invalid meta  empty id",
 			fields: fields{
-				Meta: Meta{
+				Meta: Metadata{
 					ID:     "",
 					Title:  "Some title",
 					Author: "Some author",
@@ -160,7 +160,7 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  invalid meta  empty title",
 			fields: fields{
-				Meta: Meta{
+				Meta: Metadata{
 					ID:     "1",
 					Title:  "",
 					Author: "Some author",
@@ -181,7 +181,7 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  empty verses",
 			fields: fields{
-				Meta: Meta{
+				Meta: Metadata{
 					ID:     "1",
 					Title:  "Some title",
 					Author: "Some author",
@@ -194,7 +194,7 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  invalid verse",
 			fields: fields{
-				Meta: Meta{
+				Meta: Metadata{
 					ID:     "1",
 					Title:  "Some title",
 					Author: "Some author",
@@ -218,7 +218,7 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  invalid quote",
 			fields: fields{
-				Meta: Meta{
+				Meta: Metadata{
 					ID:     "1",
 					Title:  "Some title",
 					Author: "Some author",
@@ -249,8 +249,8 @@ func TestSong_Validate(t *testing.T) {
 			rq := require.New(t)
 
 			s := Song{
-				Meta:   tt.fields.Meta,
-				Verses: tt.fields.Verses,
+				Metadata: tt.fields.Meta,
+				Verses:   tt.fields.Verses,
 			}
 			err := s.Validate()
 
@@ -301,7 +301,7 @@ func TestPreview_Validate(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			rq := require.New(t)
 
-			p := Meta{
+			p := Metadata{
 				ID:    tt.fields.ID,
 				Title: tt.fields.Title,
 			}
