@@ -8,7 +8,7 @@ COVER_PROFILE				?= coverage.out
 GOLANGCI_LINT				?= @golangci-lint
 
 DOCKER_IMAGE_REGISTRY		?= docker.io/library
-DOCKER_IMAGE_REPOSITORY		?= lindenhoney/linden-honey-scraper-go
+DOCKER_IMAGE_REPOSITORY		?= lindenhoney/linden-honey-api-go
 DOCKER_IMAGE_TAG			?= latest
 DOCKER_IMAGE				?= $(DOCKER_IMAGE_REGISTRY)/$(DOCKER_IMAGE_REPOSITORY):$(DOCKER_IMAGE_TAG)
 
