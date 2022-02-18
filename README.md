@@ -1,18 +1,17 @@
-# Linden Honey Go
+# Linden Honey API
 
-> RESTful Web Service with lyrics powered by Golang
+> Service with lyrics API powered by Go kit
 
-[![build](https://img.shields.io/github/workflow/status/linden-honey/linden-honey-go/CI)](https://github.com/linden-honey/linden-honey-go/actions?query=workflow%3ACI)
-[![version](https://img.shields.io/github/go-mod/go-version/linden-honey/linden-honey-go)](https://golang.org/)
-[![report](https://goreportcard.com/badge/github.com/linden-honey/linden-honey-go)](https://goreportcard.com/report/github.com/linden-honey/linden-honey-go)
-[![coverage](https://img.shields.io/codecov/c/github/linden-honey/linden-honey-go)](https://codecov.io/github/linden-honey/linden-honey-go)
-[![release](https://img.shields.io/github/release/linden-honey/linden-honey-go.svg)](https://github.com/linden-honey/linden-honey-go/releases)
-[![reference](https://pkg.go.dev/badge/github.com/linden-honey/linden-honey-go.svg)](https://pkg.go.dev/github.com/linden-honey/linden-honey-go)
+[![build](https://img.shields.io/github/workflow/status/linden-honey/linden-honey-api-go/CI)](https://github.com/linden-honey/linden-honey-api-go/actions?query=workflow%3ACI)
+[![version](https://img.shields.io/github/go-mod/go-version/linden-honey/linden-honey-api-go)](https://go.dev/)
+[![coverage](https://img.shields.io/codecov/c/github/linden-honey/linden-honey-api-go)](https://codecov.io/github/linden-honey/linden-honey-api-go)
+[![tag](https://img.shields.io/github/tag/linden-honey/linden-honey-api-go.svg)](https://github.com/linden-honey/linden-honey-api-go/tags)
 
 ## Technologies
 
-- [Golang](https://golang.org/)
+- [Golang](https://go.dev/)
 - [Go kit](https://gokit.io/)
+- [MongoDB](https://www.mongodb.com/)
 
 ## Usage
 
@@ -58,4 +57,4 @@ docker-compose down
 
 ## Application instance
 
-https://linden-honey-go.herokuapp.com
+[https://linden-honey-api-go.herokuapp.com](https://linden-honey-api-go.herokuapp.com)

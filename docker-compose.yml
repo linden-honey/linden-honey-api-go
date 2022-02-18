@@ -1,9 +1,27 @@
-version: "3"
+version: "3.7"
 
 services:
-  scraper:
-    image: lindenhoney/linden-honey-go:latest
+  db:
+    image: bitnami/mongodb:4.2.2
+    environment:
+      MONGODB_USERNAME: linden-honey
+      MONGODB_PASSWORD: linden-honey
+      MONGODB_DATABASE: linden-honey
+    restart: on-failure
     ports:
-      - 8080:8080
-    networks:
-      - internal
+      - 27017:27017
+    volumes:
+      - db_data:/bitnami
+
+  app:
+    image: lindenhoney/linden-honey-api-go:latest
+    build: .
+    depends_on:
+      - db
+    environment:
+      DB_URI: mongodb://linden-honey:linden-honey@db:27017/linden-honey
+    ports:
+      - 8080:80
+
+volumes:
+  db_data:

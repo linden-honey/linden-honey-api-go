@@ -1,12 +1,14 @@
 GO							?= @go
 
 PACKAGES					?= ./...
+TEST_PACKAGES				?= $(PACKAGES)
+COVER_PACKAGES				?= $(shell echo $(TEST_PACKAGES) | tr " " ",")
 COVER_PROFILE				?= coverage.out
 
 GOLANGCI_LINT				?= @golangci-lint
 
-DOCKER_IMAGE_REGISTRY		?= docker.io
-DOCKER_IMAGE_REPOSITORY		?= lindenhoney/linden-honey-go
+DOCKER_IMAGE_REGISTRY		?= docker.io/library
+DOCKER_IMAGE_REPOSITORY		?= lindenhoney/linden-honey-scraper-go
 DOCKER_IMAGE_TAG			?= latest
 DOCKER_IMAGE				?= $(DOCKER_IMAGE_REGISTRY)/$(DOCKER_IMAGE_REPOSITORY):$(DOCKER_IMAGE_TAG)
 
@@ -38,12 +40,12 @@ install: prepare
 
 .PHONY: test
 test: prepare
-	$(GO) test -v -race -coverprofile=$(COVER_PROFILE) $(PACKAGES)
+	$(GO) test -v -race -coverpkg $(COVER_PACKAGES) -coverprofile $(COVER_PROFILE) $(TEST_PACKAGES)
 
 .PHONY: coverage
 coverage: test
-	$(GO) tool cover -func=$(COVER_PROFILE) -o coverage.txt
-	$(GO) tool cover -html=$(COVER_PROFILE) -o coverage.html
+	$(GO) tool cover -func $(COVER_PROFILE) -o coverage.txt
+	$(GO) tool cover -html $(COVER_PROFILE) -o coverage.html
 
 .PHONY: lint
 lint: prepare

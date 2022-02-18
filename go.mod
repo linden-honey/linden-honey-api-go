@@ -1,4 +1,4 @@
-module github.com/linden-honey/linden-honey-go
+module github.com/linden-honey/linden-honey-api-go
 
 go 1.16
 
