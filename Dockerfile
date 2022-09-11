@@ -16,7 +16,7 @@ ARG WORK_DIR=/app
 WORKDIR $WORK_DIR
 
 ENV SERVER_HOST=0.0.0.0 \
-    SERVER_SERVER_PORT=80
+    SERVER_PORT=80
 EXPOSE $SERVER_PORT
 
 COPY --from=builder /go/bin/server /bin/server
