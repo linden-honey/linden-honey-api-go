@@ -1,14 +1,14 @@
 package song
 
 import (
+	"reflect"
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestSong_GetQuotes(t *testing.T) {
 	type fields struct {
-		Verses []Verse
+		Metadata Metadata
+		Verses   []Verse
 	}
 	tests := []struct {
 		name   string
@@ -22,17 +22,17 @@ func TestSong_GetQuotes(t *testing.T) {
 					{
 						Quotes: []Quote{
 							{
-								Phrase: "some quote",
+								Phrase: "some phrase",
 							},
 							{
-								Phrase: "another quote",
+								Phrase: "another phrase",
 							},
 						},
 					},
 					{
 						Quotes: []Quote{
 							{
-								Phrase: "one more quote",
+								Phrase: "one more phrase",
 							},
 						},
 					},
@@ -40,13 +40,13 @@ func TestSong_GetQuotes(t *testing.T) {
 			},
 			want: []Quote{
 				{
-					Phrase: "some quote",
+					Phrase: "some phrase",
 				},
 				{
-					Phrase: "another quote",
+					Phrase: "another phrase",
 				},
 				{
-					Phrase: "one more quote",
+					Phrase: "one more phrase",
 				},
 			},
 		},
@@ -60,25 +60,26 @@ func TestSong_GetQuotes(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			rq := require.New(t)
-
 			s := Song{
-				Verses: tt.fields.Verses,
+				Metadata: tt.fields.Metadata,
+				Verses:   tt.fields.Verses,
 			}
-			got := s.GetQuotes()
-
-			rq.Equal(tt.want, got)
+			if got := s.GetQuotes(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Song.GetQuotes() = %v, want %v", got, tt.want)
+			}
 		})
 	}
 }
 
 func TestSong_GetRandomQuote(t *testing.T) {
 	type fields struct {
-		Verses []Verse
+		Metadata Metadata
+		Verses   []Verse
 	}
 	tests := []struct {
 		name    string
 		fields  fields
+		want    *Quote
 		wantErr bool
 	}{
 		{
@@ -88,21 +89,24 @@ func TestSong_GetRandomQuote(t *testing.T) {
 					{
 						Quotes: []Quote{
 							{
-								Phrase: "some quote",
+								Phrase: "some phrase",
 							},
 							{
-								Phrase: "another quote",
+								Phrase: "some phrase",
 							},
 						},
 					},
 					{
 						Quotes: []Quote{
 							{
-								Phrase: "one more quote",
+								Phrase: "some phrase",
 							},
 						},
 					},
 				},
+			},
+			want: &Quote{
+				Phrase: "some phrase",
 			},
 		},
 		{
@@ -115,19 +119,17 @@ func TestSong_GetRandomQuote(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			rq := require.New(t)
-
 			s := Song{
-				Verses: tt.fields.Verses,
+				Metadata: tt.fields.Metadata,
+				Verses:   tt.fields.Verses,
 			}
 			got, err := s.GetRandomQuote()
-
-			if tt.wantErr {
-				rq.Error(err)
-			} else {
-				rq.NoError(err)
-				rq.NotNil(got)
-				rq.Contains(s.GetQuotes(), *got)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Song.GetRandomQuote() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Song.GetRandomQuote() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -135,11 +137,13 @@ func TestSong_GetRandomQuote(t *testing.T) {
 
 func TestSong_GetRandomVerse(t *testing.T) {
 	type fields struct {
-		Verses []Verse
+		Metadata Metadata
+		Verses   []Verse
 	}
 	tests := []struct {
 		name    string
 		fields  fields
+		want    *Verse
 		wantErr bool
 	}{
 		{
@@ -149,19 +153,23 @@ func TestSong_GetRandomVerse(t *testing.T) {
 					{
 						Quotes: []Quote{
 							{
-								Phrase: "some quote",
-							},
-							{
-								Phrase: "another quote",
+								Phrase: "some phrase",
 							},
 						},
 					},
 					{
 						Quotes: []Quote{
 							{
-								Phrase: "one more quote",
+								Phrase: "some phrase",
 							},
 						},
+					},
+				},
+			},
+			want: &Verse{
+				Quotes: []Quote{
+					{
+						Phrase: "some phrase",
 					},
 				},
 			},
@@ -176,19 +184,17 @@ func TestSong_GetRandomVerse(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			rq := require.New(t)
-
 			s := Song{
-				Verses: tt.fields.Verses,
+				Metadata: tt.fields.Metadata,
+				Verses:   tt.fields.Verses,
 			}
-			got, err := s.GetRandomQuote()
-
-			if tt.wantErr {
-				rq.Error(err)
-			} else {
-				rq.NoError(err)
-				rq.NotNil(got)
-				rq.Contains(s.GetQuotes(), *got)
+			got, err := s.GetRandomVerse()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Song.GetRandomVerse() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Song.GetRandomVerse() = %v, want %v", got, tt.want)
 			}
 		})
 	}

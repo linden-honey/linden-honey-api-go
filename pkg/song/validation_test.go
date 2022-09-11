@@ -2,8 +2,6 @@ package song
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestQuote_Validate(t *testing.T) {
@@ -18,7 +16,7 @@ func TestQuote_Validate(t *testing.T) {
 		{
 			name: "ok",
 			fields: fields{
-				Phrase: "Some phrase",
+				Phrase: "some phrase",
 			},
 		},
 		{
@@ -31,17 +29,11 @@ func TestQuote_Validate(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			rq := require.New(t)
-
 			q := Quote{
 				Phrase: tt.fields.Phrase,
 			}
-			err := q.Validate()
-
-			if tt.wantErr {
-				rq.Error(err)
-			} else {
-				rq.NoError(err)
+			if err := q.Validate(); (err != nil) != tt.wantErr {
+				t.Errorf("Quote.Validate() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
@@ -61,7 +53,7 @@ func TestVerse_Validate(t *testing.T) {
 			fields: fields{
 				Quotes: []Quote{
 					{
-						Phrase: "Some phrase",
+						Phrase: "some phrase",
 					},
 				},
 			},
@@ -78,7 +70,7 @@ func TestVerse_Validate(t *testing.T) {
 			fields: fields{
 				Quotes: []Quote{
 					{
-						Phrase: "Some phrase",
+						Phrase: "some phrase",
 					},
 					{
 						Phrase: "",
@@ -90,26 +82,22 @@ func TestVerse_Validate(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			rq := require.New(t)
-
 			v := Verse{
 				Quotes: tt.fields.Quotes,
 			}
-			err := v.Validate()
-
-			if tt.wantErr {
-				rq.Error(err)
-			} else {
-				rq.NoError(err)
+			if err := v.Validate(); (err != nil) != tt.wantErr {
+				t.Errorf("Verse.Validate() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
 }
 
-func TestSong_Validate(t *testing.T) {
+func TestMetadata_Validate(t *testing.T) {
 	type fields struct {
-		Meta   Metadata
-		Verses []Verse
+		ID     string
+		Title  string
+		Author string
+		Album  string
 	}
 	tests := []struct {
 		name    string
@@ -119,17 +107,66 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "ok",
 			fields: fields{
-				Meta: Metadata{
+				ID:    "123",
+				Title: "some title",
+			},
+		},
+		{
+			name: "err  empty id",
+			fields: fields{
+				ID:    "",
+				Title: "some title",
+			},
+			wantErr: true,
+		},
+		{
+			name: "err  empty title",
+			fields: fields{
+				ID:    "123",
+				Title: "",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			p := Metadata{
+				ID:     tt.fields.ID,
+				Title:  tt.fields.Title,
+				Author: tt.fields.Author,
+				Album:  tt.fields.Album,
+			}
+			if err := p.Validate(); (err != nil) != tt.wantErr {
+				t.Errorf("Metadata.Validate() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestSong_Validate(t *testing.T) {
+	type fields struct {
+		Metadata Metadata
+		Verses   []Verse
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		wantErr bool
+	}{
+		{
+			name: "ok",
+			fields: fields{
+				Metadata: Metadata{
 					ID:     "1",
-					Title:  "Some title",
-					Author: "Some author",
-					Album:  "Some album",
+					Title:  "some title",
+					Author: "some author",
+					Album:  "some album",
 				},
 				Verses: []Verse{
 					{
 						Quotes: []Quote{
 							{
-								Phrase: "Some phrase",
+								Phrase: "some phrase",
 							},
 						},
 					},
@@ -139,17 +176,17 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  invalid meta  empty id",
 			fields: fields{
-				Meta: Metadata{
+				Metadata: Metadata{
 					ID:     "",
-					Title:  "Some title",
-					Author: "Some author",
-					Album:  "Some album",
+					Title:  "some title",
+					Author: "some author",
+					Album:  "some album",
 				},
 				Verses: []Verse{
 					{
 						Quotes: []Quote{
 							{
-								Phrase: "Some phrase",
+								Phrase: "some phrase",
 							},
 						},
 					},
@@ -160,17 +197,17 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  invalid meta  empty title",
 			fields: fields{
-				Meta: Metadata{
+				Metadata: Metadata{
 					ID:     "1",
 					Title:  "",
-					Author: "Some author",
-					Album:  "Some album",
+					Author: "some author",
+					Album:  "some album",
 				},
 				Verses: []Verse{
 					{
 						Quotes: []Quote{
 							{
-								Phrase: "Some phrase",
+								Phrase: "some phrase",
 							},
 						},
 					},
@@ -181,11 +218,11 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  empty verses",
 			fields: fields{
-				Meta: Metadata{
+				Metadata: Metadata{
 					ID:     "1",
-					Title:  "Some title",
-					Author: "Some author",
-					Album:  "Some album",
+					Title:  "some title",
+					Author: "some author",
+					Album:  "some album",
 				},
 				Verses: make([]Verse, 0),
 			},
@@ -194,17 +231,17 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  invalid verse",
 			fields: fields{
-				Meta: Metadata{
+				Metadata: Metadata{
 					ID:     "1",
-					Title:  "Some title",
-					Author: "Some author",
-					Album:  "Some album",
+					Title:  "some title",
+					Author: "some author",
+					Album:  "some album",
 				},
 				Verses: []Verse{
 					{
 						Quotes: []Quote{
 							{
-								Phrase: "Some phrase",
+								Phrase: "some phrase",
 							},
 						},
 					},
@@ -218,17 +255,17 @@ func TestSong_Validate(t *testing.T) {
 		{
 			name: "err  invalid quote",
 			fields: fields{
-				Meta: Metadata{
+				Metadata: Metadata{
 					ID:     "1",
-					Title:  "Some title",
-					Author: "Some author",
-					Album:  "Some album",
+					Title:  "some title",
+					Author: "some author",
+					Album:  "some album",
 				},
 				Verses: []Verse{
 					{
 						Quotes: []Quote{
 							{
-								Phrase: "Some phrase",
+								Phrase: "some phrase",
 							},
 						},
 					},
@@ -246,71 +283,12 @@ func TestSong_Validate(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			rq := require.New(t)
-
 			s := Song{
-				Metadata: tt.fields.Meta,
+				Metadata: tt.fields.Metadata,
 				Verses:   tt.fields.Verses,
 			}
-			err := s.Validate()
-
-			if tt.wantErr {
-				rq.Error(err)
-			} else {
-				rq.NoError(err)
-			}
-		})
-	}
-}
-
-func TestPreview_Validate(t *testing.T) {
-	type fields struct {
-		ID    string
-		Title string
-	}
-	tests := []struct {
-		name    string
-		fields  fields
-		wantErr bool
-	}{
-		{
-			name: "ok",
-			fields: fields{
-				ID:    "123",
-				Title: "Some title",
-			},
-		},
-		{
-			name: "err  empty id",
-			fields: fields{
-				ID:    "",
-				Title: "Some title",
-			},
-			wantErr: true,
-		},
-		{
-			name: "err  empty title",
-			fields: fields{
-				ID:    "123",
-				Title: "",
-			},
-			wantErr: true,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			rq := require.New(t)
-
-			p := Metadata{
-				ID:    tt.fields.ID,
-				Title: tt.fields.Title,
-			}
-			err := p.Validate()
-
-			if tt.wantErr {
-				rq.Error(err)
-			} else {
-				rq.NoError(err)
+			if err := s.Validate(); (err != nil) != tt.wantErr {
+				t.Errorf("Song.Validate() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
