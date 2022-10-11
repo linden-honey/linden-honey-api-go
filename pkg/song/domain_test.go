@@ -8,7 +8,7 @@ import (
 func TestSong_GetQuotes(t *testing.T) {
 	type fields struct {
 		Metadata Metadata
-		Verses   []Verse
+		Lyrics   Lyrics
 	}
 	tests := []struct {
 		name   string
@@ -18,7 +18,7 @@ func TestSong_GetQuotes(t *testing.T) {
 		{
 			name: "ok",
 			fields: fields{
-				Verses: []Verse{
+				Lyrics: Lyrics{
 					{
 						Quotes: []Quote{
 							{
@@ -53,7 +53,7 @@ func TestSong_GetQuotes(t *testing.T) {
 		{
 			name: "empty",
 			fields: fields{
-				Verses: make([]Verse, 0),
+				Lyrics: make(Lyrics, 0),
 			},
 			want: make([]Quote, 0),
 		},
@@ -62,7 +62,7 @@ func TestSong_GetQuotes(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			s := Song{
 				Metadata: tt.fields.Metadata,
-				Verses:   tt.fields.Verses,
+				Lyrics:   tt.fields.Lyrics,
 			}
 			if got := s.GetQuotes(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Song.GetQuotes() = %v, want %v", got, tt.want)
@@ -74,7 +74,7 @@ func TestSong_GetQuotes(t *testing.T) {
 func TestSong_GetRandomQuote(t *testing.T) {
 	type fields struct {
 		Metadata Metadata
-		Verses   []Verse
+		Lyrics   Lyrics
 	}
 	tests := []struct {
 		name    string
@@ -85,7 +85,7 @@ func TestSong_GetRandomQuote(t *testing.T) {
 		{
 			name: "ok",
 			fields: fields{
-				Verses: []Verse{
+				Lyrics: Lyrics{
 					{
 						Quotes: []Quote{
 							{
@@ -112,7 +112,7 @@ func TestSong_GetRandomQuote(t *testing.T) {
 		{
 			name: "empty",
 			fields: fields{
-				Verses: make([]Verse, 0),
+				Lyrics: make(Lyrics, 0),
 			},
 			wantErr: true,
 		},
@@ -121,7 +121,7 @@ func TestSong_GetRandomQuote(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			s := Song{
 				Metadata: tt.fields.Metadata,
-				Verses:   tt.fields.Verses,
+				Lyrics:   tt.fields.Lyrics,
 			}
 			got, err := s.GetRandomQuote()
 			if (err != nil) != tt.wantErr {
@@ -138,7 +138,7 @@ func TestSong_GetRandomQuote(t *testing.T) {
 func TestSong_GetRandomVerse(t *testing.T) {
 	type fields struct {
 		Metadata Metadata
-		Verses   []Verse
+		Lyrics   Lyrics
 	}
 	tests := []struct {
 		name    string
@@ -149,7 +149,7 @@ func TestSong_GetRandomVerse(t *testing.T) {
 		{
 			name: "ok",
 			fields: fields{
-				Verses: []Verse{
+				Lyrics: Lyrics{
 					{
 						Quotes: []Quote{
 							{
@@ -177,7 +177,7 @@ func TestSong_GetRandomVerse(t *testing.T) {
 		{
 			name: "empty",
 			fields: fields{
-				Verses: make([]Verse, 0),
+				Lyrics: make(Lyrics, 0),
 			},
 			wantErr: true,
 		},
@@ -186,7 +186,7 @@ func TestSong_GetRandomVerse(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			s := Song{
 				Metadata: tt.fields.Metadata,
-				Verses:   tt.fields.Verses,
+				Lyrics:   tt.fields.Lyrics,
 			}
 			got, err := s.GetRandomVerse()
 			if (err != nil) != tt.wantErr {

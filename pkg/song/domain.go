@@ -6,6 +6,22 @@ import (
 	"time"
 )
 
+// Tag represents a domain object
+type Tag struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}
+
+// Tags represents a domain object
+type Tags []Tag
+
+// Metadata represents a domain object
+type Metadata struct {
+	ID    string `json:"id"`
+	Title string `json:"title"`
+	Tags  Tags   `json:"tags"`
+}
+
 // Quote represents a domain object
 type Quote struct {
 	Phrase string `json:"phrase"`
@@ -16,24 +32,19 @@ type Verse struct {
 	Quotes []Quote `json:"quotes"`
 }
 
-// Metadata represents a domain object
-type Metadata struct {
-	ID     string `json:"id"`
-	Title  string `json:"title"`
-	Author string `json:"author,omitempty"`
-	Album  string `json:"album,omitempty"`
-}
+// Lyrics represents a domain object
+type Lyrics []Verse
 
 // Song represents a domain object
 type Song struct {
 	Metadata
-	Verses []Verse `json:"verses"`
+	Lyrics Lyrics `json:"lyrics"`
 }
 
 // GetQuotes returns all quotes from the song
 func (s Song) GetQuotes() []Quote {
 	quotes := make([]Quote, 0)
-	for _, v := range s.Verses {
+	for _, v := range s.Lyrics {
 		quotes = append(quotes, v.Quotes...)
 	}
 
@@ -61,10 +72,10 @@ func (s Song) GetRandomVerse() (*Verse, error) {
 		rand.NewSource(time.Now().Unix()),
 	)
 
-	versesCount := len(s.Verses)
+	versesCount := len(s.Lyrics)
 	if versesCount == 0 {
 		return nil, errors.New("no verses")
 	}
 
-	return &s.Verses[r.Intn(versesCount)], nil
+	return &s.Lyrics[r.Intn(versesCount)], nil
 }
