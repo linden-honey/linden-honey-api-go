@@ -6,14 +6,11 @@ import (
 	"time"
 )
 
-// Tag represents a domain object
-type Tag struct {
-	Name  string `json:"name"`
-	Value string `json:"value"`
+// Song represents a domain object
+type Song struct {
+	Metadata
+	Lyrics `json:"lyrics"`
 }
-
-// Tags represents a domain object
-type Tags []Tag
 
 // Metadata represents a domain object
 type Metadata struct {
@@ -22,42 +19,39 @@ type Metadata struct {
 	Tags  Tags   `json:"tags"`
 }
 
-// Quote represents a domain object
-type Quote struct {
-	Phrase string `json:"phrase"`
-}
+// Tags represents a domain object
+type Tags []Tag
 
-// Verse represents a domain object
-type Verse struct {
-	Quotes []Quote `json:"quotes"`
+// Tag represents a domain object
+type Tag struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
 }
 
 // Lyrics represents a domain object
 type Lyrics []Verse
 
-// Song represents a domain object
-type Song struct {
-	Metadata
-	Lyrics Lyrics `json:"lyrics"`
-}
-
-// GetQuotes returns all quotes from the song
-func (s Song) GetQuotes() []Quote {
-	quotes := make([]Quote, 0)
-	for _, v := range s.Lyrics {
-		quotes = append(quotes, v.Quotes...)
-	}
-
-	return quotes
-}
-
-// GetRandomQuote returns a random quote from the song or an error if there are no quotes
-func (s Song) GetRandomQuote() (*Quote, error) {
+// GetRandomVerse returns a random verse from lyrics or an error if there are no verses
+func (l Lyrics) GetRandomVerse() (*Verse, error) {
 	r := rand.New(
 		rand.NewSource(time.Now().Unix()),
 	)
 
-	quotes := s.GetQuotes()
+	versesCount := len(l)
+	if versesCount == 0 {
+		return nil, errors.New("no verses")
+	}
+
+	return &l[r.Intn(versesCount)], nil
+}
+
+// GetRandomQuote returns a random quote from lyrics or an error if there are no quotes
+func (l Lyrics) GetRandomQuote() (*Quote, error) {
+	r := rand.New(
+		rand.NewSource(time.Now().Unix()),
+	)
+
+	quotes := l.GetQuotes()
 	quotesCount := len(quotes)
 	if quotesCount == 0 {
 		return nil, errors.New("no quotes")
@@ -66,16 +60,22 @@ func (s Song) GetRandomQuote() (*Quote, error) {
 	return &quotes[r.Intn(quotesCount)], nil
 }
 
-// GetRandomVerse returns a random verse from the song or an error if there are no verses
-func (s Song) GetRandomVerse() (*Verse, error) {
-	r := rand.New(
-		rand.NewSource(time.Now().Unix()),
-	)
-
-	versesCount := len(s.Lyrics)
-	if versesCount == 0 {
-		return nil, errors.New("no verses")
+// GetQuotes returns all quotes from the song
+func (l Lyrics) GetQuotes() []Quote {
+	quotes := make([]Quote, 0)
+	for _, v := range l {
+		quotes = append(quotes, v.Quotes...)
 	}
 
-	return &s.Lyrics[r.Intn(versesCount)], nil
+	return quotes
+}
+
+// Verse represents a domain object
+type Verse struct {
+	Quotes []Quote `json:"quotes"`
+}
+
+// Quote represents a domain object
+type Quote struct {
+	Phrase string `json:"phrase"`
 }
