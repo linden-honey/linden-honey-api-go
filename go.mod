@@ -1,5 +1,7 @@
 module github.com/linden-honey/linden-honey-api-go
 
-go 1.16
+go 1.19
 
-require github.com/linden-honey/linden-honey-sdk-go v0.0.7
+// +heroku goVersion go1.19
+
+require github.com/linden-honey/linden-honey-sdk-go v0.1.0
