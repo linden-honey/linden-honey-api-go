@@ -16,7 +16,7 @@ type Song struct {
 type Metadata struct {
 	ID    string `json:"id"`
 	Title string `json:"title"`
-	Tags  Tags   `json:"tags"`
+	Tags  Tags   `json:"tags,omitempty"`
 }
 
 // Tags represents a domain object
