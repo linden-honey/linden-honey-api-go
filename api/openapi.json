@@ -1,0 +1,130 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Linden Honey API",
+    "version": "v0.1.0"
+  },
+  "components": {
+    "schemas": {
+      "Song": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Metadata"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "lyrics": {
+                "$ref": "#/components/schemas/Lyrics"
+              }
+            },
+            "required": [
+              "lyrics"
+            ]
+          }
+        ]
+      },
+      "Metadata": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "tags": {
+            "$ref": "#/components/schemas/Tags"
+          }
+        },
+        "required": [
+          "id",
+          "title"
+        ]
+      },
+      "Tags": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Tag"
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ]
+      },
+      "Lyrics": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Verse"
+        }
+      },
+      "Verse": {
+        "type": "object",
+        "properties": {
+          "quotes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Quote"
+            }
+          }
+        },
+        "required": [
+          "quotes"
+        ]
+      },
+      "Quote": {
+        "type": "object",
+        "properties": {
+          "phrase": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "phrase"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "timestamp",
+          "error",
+          "message"
+        ]
+      }
+    },
+    "responses": {
+      "Error": {
+        "description": "Error happened",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}
