@@ -2,7 +2,7 @@
 
 > Service with lyrics API powered by Go kit
 
-[![build](https://img.shields.io/github/workflow/status/linden-honey/linden-honey-api-go/CI)](https://github.com/linden-honey/linden-honey-api-go/actions?query=workflow%3ACI)
+[![build](https://img.shields.io/github/workflow/status/linden-honey/linden-honey-api-go/ci.yml)](https://github.com/linden-honey/linden-honey-api-go/actions?query=workflow%3ACI)
 [![version](https://img.shields.io/github/go-mod/go-version/linden-honey/linden-honey-api-go)](https://go.dev/)
 [![coverage](https://img.shields.io/codecov/c/github/linden-honey/linden-honey-api-go)](https://codecov.io/github/linden-honey/linden-honey-api-go)
 [![tag](https://img.shields.io/github/tag/linden-honey/linden-honey-api-go.svg)](https://github.com/linden-honey/linden-honey-api-go/tags)
