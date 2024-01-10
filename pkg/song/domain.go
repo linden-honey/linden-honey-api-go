@@ -6,29 +6,29 @@ import (
 	"time"
 )
 
-// Song represents a domain object
+// Song is a domain object
 type Song struct {
 	Metadata
 	Lyrics `json:"lyrics"`
 }
 
-// Metadata represents a domain object
+// Metadata is a domain object
 type Metadata struct {
 	ID    string `json:"id"`
 	Title string `json:"title"`
 	Tags  Tags   `json:"tags,omitempty"`
 }
 
-// Tags represents a domain object
+// Tags is a domain object
 type Tags []Tag
 
-// Tag represents a domain object
+// Tag is a domain object
 type Tag struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
 }
 
-// Lyrics represents a domain object
+// Lyrics is a domain object
 type Lyrics []Verse
 
 // GetRandomVerse returns a random verse from lyrics or an error if there are no verses
@@ -70,12 +70,12 @@ func (l Lyrics) GetQuotes() []Quote {
 	return quotes
 }
 
-// Verse represents a domain object
+// Verse is a domain object
 type Verse struct {
 	Quotes []Quote `json:"quotes"`
 }
 
-// Quote represents a domain object
+// Quote is a domain object
 type Quote struct {
 	Phrase string `json:"phrase"`
 }
