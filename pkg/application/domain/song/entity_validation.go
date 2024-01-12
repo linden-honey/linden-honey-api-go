@@ -9,12 +9,12 @@ import (
 )
 
 // Validate a Song and returns an error if validation is failed
-func (s Song) Validate() error {
-	if err := s.Metadata.Validate(); err != nil {
+func (e Entity) Validate() error {
+	if err := e.Metadata.Validate(); err != nil {
 		return err
 	}
 
-	if err := s.Lyrics.Validate(); err != nil {
+	if err := e.Lyrics.Validate(); err != nil {
 		return sdkerrors.NewInvalidValueError("Lyrics", err)
 	}
 

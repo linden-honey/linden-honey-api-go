@@ -85,7 +85,7 @@ func TestSong_Validate(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := Song{
+			s := Entity{
 				Metadata: tt.fields.Metadata,
 				Lyrics:   tt.fields.Lyrics,
 			}
