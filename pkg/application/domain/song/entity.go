@@ -3,7 +3,6 @@ package song
 import (
 	"errors"
 	"math/rand"
-	"time"
 )
 
 // Entity is a main domain object.
@@ -33,31 +32,23 @@ type Lyrics []Verse
 
 // GetRandomVerse returns a random verse from lyrics or an error if there are no verses.
 func (l Lyrics) GetRandomVerse() (*Verse, error) {
-	r := rand.New(
-		rand.NewSource(time.Now().Unix()),
-	)
-
 	versesCount := len(l)
 	if versesCount == 0 {
 		return nil, errors.New("no verses")
 	}
 
-	return &l[r.Intn(versesCount)], nil
+	return &l[rand.Intn(versesCount)], nil
 }
 
 // GetRandomQuote returns a random quote from lyrics or an error if there are no quotes.
 func (l Lyrics) GetRandomQuote() (*Quote, error) {
-	r := rand.New(
-		rand.NewSource(time.Now().Unix()),
-	)
-
 	quotes := l.GetQuotes()
 	quotesCount := len(quotes)
 	if quotesCount == 0 {
 		return nil, errors.New("no quotes")
 	}
 
-	return &quotes[r.Intn(quotesCount)], nil
+	return &quotes[rand.Intn(quotesCount)], nil
 }
 
 // GetQuotes returns all quotes from the song.
