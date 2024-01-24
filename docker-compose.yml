@@ -4,9 +4,9 @@ services:
   db:
     image: bitnami/mongodb:4.2.2
     environment:
-      MONGODB_USERNAME: linden-honey
-      MONGODB_PASSWORD: linden-honey
-      MONGODB_DATABASE: linden-honey
+      MONGODB_USERNAME: linden_honey
+      MONGODB_PASSWORD: linden_honey
+      MONGODB_DATABASE: linden_honey
     restart: on-failure
     ports:
       - 27017:27017
@@ -19,7 +19,7 @@ services:
     depends_on:
       - db
     environment:
-      DB_URL: mongodb://linden-honey:linden-honey@db:27017/linden-honey
+      DB_URL: mongodb://linden_honey:linden_honey@db:27017/linden_honey
     ports:
       - 8080:80
 
