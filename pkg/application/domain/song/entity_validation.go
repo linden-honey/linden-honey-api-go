@@ -9,20 +9,24 @@ import (
 )
 
 // Validate a Song and returns an error if validation is failed
-func (s Song) Validate() error {
-	if err := s.Metadata.Validate(); err != nil {
-		return err
+func (e Entity) Validate() error {
+	errs := make([]error, 0)
+
+	if err := e.Metadata.Validate(); err != nil {
+		errs = append(errs, sdkerrors.NewInvalidValueError("Metadata", err))
 	}
 
-	if err := s.Lyrics.Validate(); err != nil {
-		return sdkerrors.NewInvalidValueError("Lyrics", err)
+	if err := e.Lyrics.Validate(); err != nil {
+		errs = append(errs, sdkerrors.NewInvalidValueError("Lyrics", err))
 	}
 
-	return nil
+	return errors.Join(errs...)
 }
 
 // Validate a Metadata and returns an error if validation is failed
 func (m Metadata) Validate() error {
+	errs := make([]error, 0)
+
 	if strings.TrimSpace(m.ID) == "" {
 		return sdkerrors.NewRequiredValueError("ID")
 	}
@@ -35,68 +39,81 @@ func (m Metadata) Validate() error {
 		return sdkerrors.NewInvalidValueError("Tags", err)
 	}
 
-	return nil
+	return errors.Join(errs...)
 }
 
 // Validate Tags and returns an error if validation is failed
 func (ts Tags) Validate() error {
+	errs := make([]error, 0)
+
 	unique := make(map[Tag]struct{}, len(ts))
 	for i, t := range ts {
 		if _, ok := unique[t]; !ok {
 			unique[t] = struct{}{}
 		} else {
-			return sdkerrors.NewInvalidValueError(fmt.Sprintf("Tags[%d]", i), errors.New("duplicate tag"))
+			errs = append(
+				errs,
+				sdkerrors.NewInvalidValueError(fmt.Sprintf("Tags[%d]", i), errors.New("duplicate tag")),
+			)
+
+			continue
 		}
 
 		if err := t.Validate(); err != nil {
-			return sdkerrors.NewInvalidValueError(fmt.Sprintf("Tags[%d]", i), err)
+			errs = append(errs, sdkerrors.NewInvalidValueError(fmt.Sprintf("Tags[%d]", i), err))
 		}
 	}
 
-	return nil
+	return errors.Join(errs...)
 }
 
 // Validate a Tag and returns an error if validation is failed
 func (t Tag) Validate() error {
+	errs := make([]error, 0)
+
 	if strings.TrimSpace(t.Name) == "" {
-		return sdkerrors.NewRequiredValueError("Name")
+		errs = append(errs, sdkerrors.NewRequiredValueError("Name"))
 	}
 
 	if strings.TrimSpace(t.Value) == "" {
-		return sdkerrors.NewRequiredValueError("Value")
+		errs = append(errs, sdkerrors.NewRequiredValueError("Value"))
 	}
 
-	return nil
+	return errors.Join(errs...)
 }
 
 // Validate Lyrics and returns an error if validation is failed
 func (l Lyrics) Validate() error {
+	errs := make([]error, 0)
+
 	if len(l) == 0 {
-		return sdkerrors.ErrEmptyValue
+		errs = append(errs, sdkerrors.ErrEmptyValue)
 	}
 
 	for i, v := range l {
 		if err := v.Validate(); err != nil {
-			return sdkerrors.NewInvalidValueError(fmt.Sprintf("Lyrics[%d]", i), err)
+			errs = append(errs, sdkerrors.NewInvalidValueError(fmt.Sprintf("Lyrics[%d]", i), err))
 		}
 	}
 
-	return nil
+	return errors.Join(errs...)
 }
 
 // Validate a Verse and returns an error if validation is failed
 func (v Verse) Validate() error {
+	errs := make([]error, 0)
+
 	if len(v.Quotes) == 0 {
-		return sdkerrors.NewRequiredValueError("Quotes")
+		errs = append(errs, sdkerrors.NewRequiredValueError("Quotes"))
 	}
 
 	for i, q := range v.Quotes {
 		if err := q.Validate(); err != nil {
-			return sdkerrors.NewInvalidValueError(fmt.Sprintf("Quotes[%d]", i), err)
+			errs = append(errs, sdkerrors.NewInvalidValueError(fmt.Sprintf("Quotes[%d]", i), err))
 		}
 	}
 
-	return nil
+	return errors.Join(errs...)
 }
 
 // Validate a Quote and returns an error if validation is failed
