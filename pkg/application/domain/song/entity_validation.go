@@ -47,20 +47,20 @@ func (ts Tags) Validate() error {
 	errs := make([]error, 0)
 
 	unique := make(map[Tag]struct{}, len(ts))
-	for i, t := range ts {
+	for _, t := range ts {
 		if _, ok := unique[t]; !ok {
 			unique[t] = struct{}{}
 		} else {
 			errs = append(
 				errs,
-				sdkerrors.NewInvalidValueError(fmt.Sprintf("Tags[%d]", i), errors.New("duplicate tag")),
+				sdkerrors.NewInvalidValueError(fmt.Sprintf("%#v", t), errors.New("duplicate tag")),
 			)
 
 			continue
 		}
 
 		if err := t.Validate(); err != nil {
-			errs = append(errs, sdkerrors.NewInvalidValueError(fmt.Sprintf("Tags[%d]", i), err))
+			errs = append(errs, sdkerrors.NewInvalidValueError(fmt.Sprintf("%#v", t), err))
 		}
 	}
 
@@ -103,11 +103,11 @@ func (l Lyrics) Validate() error {
 func (v Verse) Validate() error {
 	errs := make([]error, 0)
 
-	if len(v.Quotes) == 0 {
+	if len(v) == 0 {
 		errs = append(errs, sdkerrors.NewRequiredValueError("Quotes"))
 	}
 
-	for i, q := range v.Quotes {
+	for i, q := range v {
 		if err := q.Validate(); err != nil {
 			errs = append(errs, sdkerrors.NewInvalidValueError(fmt.Sprintf("Quotes[%d]", i), err))
 		}
@@ -118,8 +118,8 @@ func (v Verse) Validate() error {
 
 // Validate a Quote and returns an error if validation is failed
 func (q Quote) Validate() error {
-	if strings.TrimSpace(q.Phrase) == "" {
-		return sdkerrors.NewRequiredValueError("Phrase")
+	if strings.TrimSpace(string(q)) == "" {
+		return sdkerrors.ErrEmptyValue
 	}
 
 	return nil

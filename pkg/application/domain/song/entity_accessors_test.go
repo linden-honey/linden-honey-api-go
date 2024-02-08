@@ -9,37 +9,25 @@ func TestLyrics_GetRandomVerse(t *testing.T) {
 	tests := []struct {
 		name    string
 		l       Lyrics
-		want    *Verse
+		want    Verse
 		wantErr bool
 	}{
 		{
 			name: "ok",
 			l: Lyrics{
 				{
-					Quotes: []Quote{
-						{
-							Phrase: "some phrase",
-						},
-					},
+					"some quote",
 				},
 				{
-					Quotes: []Quote{
-						{
-							Phrase: "some phrase",
-						},
-					},
+					"some quote",
 				},
 			},
-			want: &Verse{
-				Quotes: []Quote{
-					{
-						Phrase: "some phrase",
-					},
-				},
+			want: Verse{
+				"some quote",
 			},
 		},
 		{
-			name:    "empty",
+			name:    "err  empty lyrics",
 			l:       Lyrics{},
 			wantErr: true,
 		},
@@ -62,33 +50,23 @@ func TestLyrics_GetRandomQuote(t *testing.T) {
 	tests := []struct {
 		name    string
 		l       Lyrics
-		want    *Quote
+		want    Quote
 		wantErr bool
 	}{
 		{
 			name: "ok",
 			l: Lyrics{
 				{
-					Quotes: []Quote{
-						{
-							Phrase: "some phrase",
-						},
-						{
-							Phrase: "some phrase",
-						},
-					},
+
+					"some quote",
+					"some quote",
 				},
 				{
-					Quotes: []Quote{
-						{
-							Phrase: "some phrase",
-						},
-					},
+
+					"some quote",
 				},
 			},
-			want: &Quote{
-				Phrase: "some phrase",
-			},
+			want: "some quote",
 		},
 		{
 			name:    "empty",
@@ -120,33 +98,19 @@ func TestLyrics_GetQuotes(t *testing.T) {
 			name: "ok",
 			l: Lyrics{
 				{
-					Quotes: []Quote{
-						{
-							Phrase: "some phrase",
-						},
-						{
-							Phrase: "another phrase",
-						},
-					},
+
+					"some quote",
+					"another quote",
 				},
 				{
-					Quotes: []Quote{
-						{
-							Phrase: "one more phrase",
-						},
-					},
+
+					"one more quote",
 				},
 			},
 			want: []Quote{
-				{
-					Phrase: "some phrase",
-				},
-				{
-					Phrase: "another phrase",
-				},
-				{
-					Phrase: "one more phrase",
-				},
+				"some quote",
+				"another quote",
+				"one more quote",
 			},
 		},
 		{

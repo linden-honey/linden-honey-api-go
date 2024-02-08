@@ -33,11 +33,7 @@ func TestSong_Validate(t *testing.T) {
 				},
 				Lyrics: Lyrics{
 					{
-						Quotes: []Quote{
-							{
-								Phrase: "some phrase",
-							},
-						},
+						"some quote",
 					},
 				},
 			},
@@ -51,11 +47,7 @@ func TestSong_Validate(t *testing.T) {
 				},
 				Lyrics: Lyrics{
 					{
-						Quotes: []Quote{
-							{
-								Phrase: "some phrase",
-							},
-						},
+						"some quote",
 					},
 				},
 			},
@@ -307,11 +299,8 @@ func TestLyrics_Validate(t *testing.T) {
 			name: "ok",
 			l: Lyrics{
 				{
-					Quotes: []Quote{
-						{
-							Phrase: "some phrase",
-						},
-					},
+
+					"some quote",
 				},
 			},
 		},
@@ -324,11 +313,7 @@ func TestLyrics_Validate(t *testing.T) {
 			name: "err  invalid verse",
 			l: Lyrics{
 				{
-					Quotes: []Quote{
-						{
-							Phrase: "",
-						},
-					},
+					"",
 				},
 			},
 			wantErr: true,
@@ -344,52 +329,34 @@ func TestLyrics_Validate(t *testing.T) {
 }
 
 func TestVerse_Validate(t *testing.T) {
-	type fields struct {
-		Quotes []Quote
-	}
 	tests := []struct {
 		name    string
-		fields  fields
+		v       Verse
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			fields: fields{
-				Quotes: []Quote{
-					{
-						Phrase: "some phrase",
-					},
-				},
+			v: Verse{
+				"some quote",
 			},
 		},
 		{
-			name: "err  empty quotes",
-			fields: fields{
-				Quotes: make([]Quote, 0),
-			},
+			name:    "err  empty verse",
+			v:       make(Verse, 0),
 			wantErr: true,
 		},
 		{
 			name: "err  invalid quote",
-			fields: fields{
-				Quotes: []Quote{
-					{
-						Phrase: "some phrase",
-					},
-					{
-						Phrase: "",
-					},
-				},
+			v: Verse{
+				"some quote",
+				"",
 			},
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			v := Verse{
-				Quotes: tt.fields.Quotes,
-			}
-			if err := v.Validate(); (err != nil) != tt.wantErr {
+			if err := tt.v.Validate(); (err != nil) != tt.wantErr {
 				t.Errorf("Verse.Validate() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -397,34 +364,24 @@ func TestVerse_Validate(t *testing.T) {
 }
 
 func TestQuote_Validate(t *testing.T) {
-	type fields struct {
-		Phrase string
-	}
 	tests := []struct {
 		name    string
-		fields  fields
+		q       Quote
 		wantErr bool
 	}{
 		{
 			name: "ok",
-			fields: fields{
-				Phrase: "some phrase",
-			},
+			q:    "some quote",
 		},
 		{
-			name: "err  empty phrase",
-			fields: fields{
-				Phrase: "",
-			},
+			name:    "err  empty quote",
+			q:       "",
 			wantErr: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			q := Quote{
-				Phrase: tt.fields.Phrase,
-			}
-			if err := q.Validate(); (err != nil) != tt.wantErr {
+			if err := tt.q.Validate(); (err != nil) != tt.wantErr {
 				t.Errorf("Quote.Validate() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
